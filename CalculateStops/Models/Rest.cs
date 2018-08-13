@@ -8,25 +8,11 @@ namespace CalculateStops.Models
     {
         public Rest()
         {
-
         }
-
-        /// <summary>
-        /// This method convert JSON to a any type
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="input"></param>
-        /// <returns></returns>
         public static T Deserialize<T>(string input)
         {
             return JsonConvert.DeserializeObject<T>(input);
         }
-
-        /// <summary>
-        /// Do post in SW API
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns></returns>
         public GridDTO SendRequestion(string url)
         {
             var httpClient = new HttpClient();
@@ -56,6 +42,5 @@ namespace CalculateStops.Models
             }
             return gridDTO;
         }
-
     }
 }

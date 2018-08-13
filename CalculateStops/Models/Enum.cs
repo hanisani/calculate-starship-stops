@@ -1,6 +1,6 @@
 ﻿namespace CalculateStops.Models
 {
-    public enum Dias
+    public enum DaysInYear
     {
         [StringValue("Years")]
         [StringDescription("365")]

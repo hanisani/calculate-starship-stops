@@ -2,52 +2,31 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace CalculateStops
 {
     public class StopsCalculator 
     {
-        /// <summary>
-        /// </summary>
-        /// <returns>View(listResultDTO)</returns>
-
         public GridResultDTO CalculateStops(string input)
         {            
             return Search(input);
-        }
-        
-        /// <summary>
-        /// Method search the date in enum with the return of rest
-        /// </summary>
-        /// <param name="number"></param>
-        /// <param name="strtime"></param>
-        /// <returns>Convert.ToInt32(msg.StringDescription)</returns>
+        }        
         public int getDays(int number, string strtime)
         {
-            var msg = Utils.GetListEnum(typeof(Dias)).Where(w => w.Name == strtime).FirstOrDefault();
+            var msg = Utils.GetListEnum(typeof(DaysInYear)).Where(w => w.Name == strtime).FirstOrDefault();
             return Convert.ToInt32(msg.StringDescription);
-        }
-
-        /// <summary>
-        /// Add in list result
-        /// </summary>
-        /// <param name="MGLTView"></param>
-        /// <param name="listResultDTO"></param>
-        /// <param name="starshipsDTO"></param>
-        /// <returns>listResultDTO</returns>
-        public List<ResultDTO> addResultDTO(string MGLTView, List<ResultDTO> listResultDTO, GridDTO starshipsDTO)
+        }        
+        public List<ResultDTO> AddResultDTO(string MGLTView, List<ResultDTO> listResultDTO, GridDTO starshipsDTO)
         {
-            foreach (var item in starshipsDTO.results)
+            foreach (var item in starshipsDTO.Results)
             {
                 ResultDTO resultDTO = new ResultDTO();
-                string name = item.name;
-                string consumables = item.consumables;
+                string name = item.Name;
+                string consumables = item.Consumables;
                 int MGLT = 0;
                 int stops = 0;
                 if (item.MGLT != "unknown")
                     MGLT = Convert.ToInt32(item.MGLT);
-
 
                 string[] consumablesSplit = consumables.Split(' ');
                 if (consumablesSplit.Length == 2 && MGLT != 0)
@@ -61,22 +40,16 @@ namespace CalculateStops
                     stops = Convert.ToInt32(Convert.ToInt32(MGLTView) / (consumableNumber * consumablesDays * 24 * MGLT));
                 }
 
-                resultDTO.name = item.name;
-                resultDTO.value = stops;
+                resultDTO.Name = item.Name;
+                resultDTO.Value = stops;
                 listResultDTO.Add(resultDTO);
             }
 
             return listResultDTO;
-        }
-
-        /// <summary>
-        /// API post rest the url
-        /// </summary>
-        /// <param name="MGLTView"></param>
-        /// <returns>gridResultDTO</returns>
+        }        
         public GridResultDTO Search(string MGLTView)
         {
-            string url = "http://swapi.co/api/starships/?page=1";
+            string url = "http://swapi.co/api/starships/?page=1"; // Need to move to config
             Rest rest = new Rest();
             GridDTO starshipsDTO = rest.SendRequestion(url);
 
@@ -85,23 +58,23 @@ namespace CalculateStops
                 return gridResultDTO;
 
             List<ResultDTO> listResultDTO = new List<ResultDTO>();
-            addResultDTO(MGLTView, listResultDTO, starshipsDTO);
+            AddResultDTO(MGLTView, listResultDTO, starshipsDTO);
             
-            for (int i = 0; i < Convert.ToInt32(starshipsDTO.count) / 10; i++)
+            for (int i = 0; i < Convert.ToInt32(starshipsDTO.Count) / 10; i++)
             {
-                if (!string.IsNullOrEmpty(starshipsDTO.next))
+                if (!string.IsNullOrEmpty(starshipsDTO.Next))
                 {
-                    starshipsDTO = rest.SendRequestion(starshipsDTO.next);
+                    starshipsDTO = rest.SendRequestion(starshipsDTO.Next);
                     if (starshipsDTO != null)
-                        addResultDTO(MGLTView, listResultDTO, starshipsDTO);
+                        AddResultDTO(MGLTView, listResultDTO, starshipsDTO);
                 }
             }
 
             gridResultDTO.MGLTView = MGLTView;
-            gridResultDTO.count = starshipsDTO.count;
-            gridResultDTO.next = starshipsDTO.next;
-            gridResultDTO.previous = starshipsDTO.previous;
-            gridResultDTO.resultDTO = listResultDTO;
+            gridResultDTO.Count = starshipsDTO.Count;
+            gridResultDTO.Next = starshipsDTO.Next;
+            gridResultDTO.Previous = starshipsDTO.Previous;
+            gridResultDTO.ResultDTO = listResultDTO;
 
             return gridResultDTO;
         }

@@ -4,9 +4,9 @@ namespace CalculateStops.Models
 {
     public class GridDTO
     {
-        public string count { get;set;}
-        public string next { get; set; }
-        public string previous { get; set; }
-        public virtual List<StartshipDTO> results { get; set; }
+        public string Count { get;set;}
+        public string Next { get; set; }
+        public string Previous { get; set; }
+        public virtual List<StartshipDTO> Results { get; set; }
     }
 }

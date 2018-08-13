@@ -20,8 +20,8 @@ namespace CalculateStops
             
             Console.WriteLine(Environment.NewLine + "...Itenary Starts..." + Environment.NewLine);
 
-            foreach (var item in result.resultDTO)
-                Console.WriteLine("{0} :: {1} stops", item.name, item.value);
+            foreach (var item in result.ResultDTO)
+                Console.WriteLine("{0} :: {1} stops", item.Name, item.Value);
 
             Console.WriteLine(Environment.NewLine + "...Itenary Ends..." + Environment.NewLine);
 
