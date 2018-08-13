@@ -28,7 +28,7 @@ namespace CalculateStops.Models
             {
                 object objValue = GetEnumValue((Enum)Enum.Parse(value, campoEnum));
                 FieldInfo fi = value.GetField(campoEnum);
-                string strStringValue = string.Empty, strStringDescription = string.Empty, strStringTabTipoSolicitacao = string.Empty, strStringTitulo = string.Empty;
+                string strStringValue = string.Empty, strStringDescription = string.Empty;
 
                 if (fi.GetCustomAttributes(typeof(StringValueAttribute), false) is StringValueAttribute[] attribs && attribs.Length > 0)
                     strStringValue = attribs[0].StringValue;
@@ -41,9 +41,7 @@ namespace CalculateStops.Models
                     Name = fi.Name,
                     StringValue = strStringValue,
                     Value = objValue.ToString(),
-                    StringDescription = strStringDescription,
-                    StringTabTipoSolicitacao = strStringTabTipoSolicitacao,
-                    StringTitulo = strStringTitulo
+                    StringDescription = strStringDescription
                 });
             }
 
